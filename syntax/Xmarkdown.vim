@@ -105,10 +105,10 @@ execute 'syn region mkdCode matchgroup=mkdCodeDelimiter start=/\(\([^\\]\|^\)\\\
 execute 'syn region mkdCode matchgroup=mkdCodeDelimiter start=/^\s*\z(\~\{3,}\)\s*[0-9A-Za-z_+-]*\s*$/      end=/^\s*\z1\~*\s*$/'           . s:concealcode
 execute 'syn region mkdCode matchgroup=mkdCodeDelimiter start="<pre[^>]*\\\@<!>"                            end="</pre>"'                   . s:concealcode
 execute 'syn region mkdCode matchgroup=mkdCodeDelimiter start="<code[^>]*\\\@<!>"                           end="</code>"'                  . s:concealcode
+syn region mkdFootnote     start="\[^"                     end="\]"
 syn match  mkdCode         /^\s*\n\(\(\s\{8,}[^ ]\|\t\t\+[^\t]\).*\n\)\+/
 syn match  mkdCode         /\%^\(\(\s\{4,}[^ ]\|\t\+[^\t]\).*\n\)\+/
 syn match  mkdCode         /^\s*\n\(\(\s\{4,}[^ ]\|\t\+[^\t]\).*\n\)\+/ contained
-syn region mkdFootnote     start="\[^"                     end="\]"
 syn match  mkdListItem     /^\s*\%([-*+]\|\d\+\.\)\ze\s\+/ contained
 syn region mkdListItemLine start="^\s*\%([-*+]\|\d\+\.\)\s\+" end="$" oneline contains=@mkdNonListItem,mkdListItem,@Spell
 syn region mkdNonListItemBlock start="\(\%^\(\s*\([-*+]\|\d\+\.\)\s\+\)\@!\|\n\(\_^\_$\|\s\{4,}[^ ]\|\t+[^\t]\)\@!\)" end="^\(\s*\([-*+]\|\d\+\.\)\s\+\)\@=" contains=@mkdNonListItem,@Spell
@@ -155,60 +155,7 @@ if get(g:, 'vim_markdown_strikethrough', 0)
     HtmlHiLink mkdStrike        htmlStrike
 endif
 
-" ==================================
-" Author kraxli
-" ==================================
-let tag_prefixes = '\[+&:]'
-
-" --- define matching patterns ---
-syn match mkdTaskDone /^\s*[\-\+\*]\s\[[xX]\].*$/
-execute 'syntax match mkdTag ' . '/\V' . tag_prefixes . '\w\+/'
-
-" Timing needs to come after Project!
-syn match mkdTaskTiming  /\v\d{2}:\d\d/
-syn match mkdTaskTiming  /\v\d{4}-\d\d-\d{2}/
-syn match mkdTaskTiming  /\v\d:\d\d/
-syn match mkdTaskTiming  /\v\d:\d\d-/
-syn match mkdTaskTiming  /\v\d{2}:\d\d-/
-syn match mkdTaskTiming  /\v\d{2}:\d\d-\d{2}:\d\d/
-syn match mkdTaskTiming  /\v\@\d{4}-\d\d-\d\d/
-syn match mkdTaskTiming  /\v\@\d{4}-\d\d-\d\d\:/
-syn match mkdTaskTiming  /\v\@\d{4}-\d\d-\d\d\s*-\s*\d{4}-\d\d-\d\d\:/
-execute 'syntax match mkdToday /' .strftime("%Y-%m-%d"). '/'
-execute 'syntax match mkdToday /\[DD: *' .strftime("%Y-%m-%d"). '\]/'
-execute 'syntax match mkdToday /@'.strftime("%Y-%m-%d").'/'
-execute 'syntax match mkdToday / \='.strftime("%Y-%m-%d").':/'
-execute 'syntax match mkdToday /\s\='.strftime("%Y-%m-%d").':/'
-execute 'syntax match mkdToday /\v\@'.strftime("%Y-%m-%d").'\s=[-]\s=\d{4}-\d\d-\d\d\s=\:/'
-execute 'syntax match mkdToday /\v\@\d{4}-\d\d-\d\d\s=[-]\s='.strftime("%Y-%m-%d").'\s=\:/'
-
-" --- define colors ---
-" http://alvinalexander.com/linux/vi-vim-editor-color-scheme-syntax
-" https://vi.stackexchange.com/questions/3355/why-do-custom-highlights-in-my-vimrc-get-cleared-or-reset-to-default
-" hi hiFolks guifg=#80a0ff ctermfg=9  " PreProc Statement hiFolks PemenuSel  Special
-" hi hiMe gui=underline,bold guifg=#80a0ff cterm=underline,bold ctermfg=9
-hi hi4TaskDone gui=italic guifg=#928374 cterm=italic ctermfg=242  " ctermfg=245
-autocmd ColorScheme * hi hi4TaskDone gui=italic guifg=#928374 cterm=italic ctermfg=242  " ctermfg=245
-hi hiToday guifg=#de935f ctermfg=173 gui=bold cterm=bold
-autocmd ColorScheme * hi link hiToday Type
-autocmd ColorScheme * hi hiToday  guifg=#de935f ctermfg=173 gui=bold cterm=bold
-" hi hiToday gui=underline,bold guifg=#ff9800 cterm=underline,bold ctermfg=208
-
-" " --- link syntax-patterns to defined color patterns ---
-hi link mkdTaskDone hi4TaskDone " Comment
-hi link mkdTag DiffChange
-hi link mkdTaskTiming Type
-hi link mkdToday hiToday
-" DiffChange ErrorMsg Directory Todo Identifier (ctermfg=139 guifg=#b294bb)
-" cssAttr DiffDelete Constant
-" Comment StatusLineNC  hi4TaskDone
-
-
-syn cluster mkdNonListItem contains=@htmlTop,htmlItalic,htmlBold,htmlBoldItalic,mkdFootnotes,mkdInlineURL,mkdLink,mkdLinkDef,mkdLineBreak,mkdBlockquote,mkdRule,htmlH1,htmlH2,htmlH3,htmlH4,htmlH5,htmlH6,mkdMath,mkdStrike,mkdTag,mkdTaskTiming,mkdToday
-
-" ==================================
-" Plasticboy
-" ==================================
+syn cluster mkdNonListItem contains=@htmlTop,htmlItalic,htmlBold,htmlBoldItalic,mkdFootnotes,mkdInlineURL,mkdLink,mkdLinkDef,mkdLineBreak,mkdBlockquote,mkdCode,mkdRule,htmlH1,htmlH2,htmlH3,htmlH4,htmlH5,htmlH6,mkdMath,mkdStrike
 
 "highlighting for Markdown groups
 HtmlHiLink mkdString        String
@@ -231,7 +178,7 @@ HtmlHiLink mkdLinkDefTarget mkdURL
 HtmlHiLink mkdLinkTitle     htmlString
 HtmlHiLink mkdDelimiter     Delimiter
 
-let b:current_syntax = "mkd"
+" let b:current_syntax = "mkd"
 
 delcommand HtmlHiLink
 " vim: ts=8
