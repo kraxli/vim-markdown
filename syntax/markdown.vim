@@ -162,7 +162,7 @@ let tag_prefixes = '\[+&:]'
 
 " --- define matching patterns ---
 syn match mkdTaskDone /^\s*[\-\+\*]\s\[[xX]\].*$/
-execute 'syntax match mkdTag ' . '/\V' . tag_prefixes . '\w\+/'
+execute 'syntax match mkdTag ' . '/\V' . tag_prefixes . '\S\+/'
 
 " Timing needs to come after Project!
 syn match mkdTaskTiming  /\v\d{2}:\d\d/
