@@ -158,11 +158,19 @@ endif
 " ==================================
 " Author kraxli
 " ==================================
-let tag_prefixes = '\[+&:]'
+if !exists('g:mkd_tag_prefixes')
+  let g:mkd_tag_prefixes = '\[+&:]'
+endif
 
-" --- define matching patterns ---
-syn match mkdTaskDone /^\s*[\-\+\*]\s\[[xX]\].*$/
-execute 'syntax match mkdTag ' . '/\V\s\zs' . tag_prefixes . '\S\{2,}/'
+" --- define colors ---
+" http://alvinalexander.com/linux/vi-vim-editor-color-scheme-syntax
+" https://vi.stackexchange.com/questions/3355/why-do-custom-highlights-in-my-vimrc-get-cleared-or-reset-to-default
+" ---------------------
+hi hiTaskDone gui=italic guifg=#928374 cterm=italic ctermfg=242  " ctermfg=245
+autocmd ColorScheme * hi hi4TaskDone gui=italic guifg=#928374 cterm=italic ctermfg=242  " ctermfg=245
+hi hiToday guifg=#de935f ctermfg=173 gui=bold cterm=bold
+autocmd ColorScheme * hi link hiToday Type
+autocmd ColorScheme * hi hiToday  guifg=#de935f ctermfg=173 gui=bold cterm=bold
 
 " Timing needs to come after Project!
 syn match mkdTaskTiming  /\v\d{2}:\d\d/
@@ -182,26 +190,16 @@ execute 'syntax match mkdToday /\s\='.strftime("%Y-%m-%d").':/'
 execute 'syntax match mkdToday /\v\@'.strftime("%Y-%m-%d").'\s=[-]\s=\d{4}-\d\d-\d\d\s=\:/'
 execute 'syntax match mkdToday /\v\@\d{4}-\d\d-\d\d\s=[-]\s='.strftime("%Y-%m-%d").'\s=\:/'
 
-" --- define colors ---
-" http://alvinalexander.com/linux/vi-vim-editor-color-scheme-syntax
-" https://vi.stackexchange.com/questions/3355/why-do-custom-highlights-in-my-vimrc-get-cleared-or-reset-to-default
-" hi hiFolks guifg=#80a0ff ctermfg=9  " PreProc Statement hiFolks PemenuSel  Special
-" hi hiMe gui=underline,bold guifg=#80a0ff cterm=underline,bold ctermfg=9
-hi hi4TaskDone gui=italic guifg=#928374 cterm=italic ctermfg=242  " ctermfg=245
-autocmd ColorScheme * hi hi4TaskDone gui=italic guifg=#928374 cterm=italic ctermfg=242  " ctermfg=245
-hi hiToday guifg=#de935f ctermfg=173 gui=bold cterm=bold
-autocmd ColorScheme * hi link hiToday Type
-autocmd ColorScheme * hi hiToday  guifg=#de935f ctermfg=173 gui=bold cterm=bold
-" hi hiToday gui=underline,bold guifg=#ff9800 cterm=underline,bold ctermfg=208
+" --- define patterns ---
+execute 'syntax match mkdTag ' . '/\V\s\zs' . g:mkd_tag_prefixes . '\S\{2,}/'
+syn match mkdTaskDone /^\s*[\-\+\*]\s\[[xX]\].*$/ contains=@mkdTag,@mkdTaskTiming  " @ : exclude
 
 " " --- link syntax-patterns to defined color patterns ---
-hi link mkdTaskDone hi4TaskDone
+hi link mkdTaskDone hiTaskDone
 hi link mkdTag DiffChange
 hi link mkdTaskTiming Type
 hi link mkdToday hiToday
-" DiffChange ErrorMsg Directory Todo Identifier (ctermfg=139 guifg=#b294bb)
-" cssAttr DiffDelete Constant
-" Comment StatusLineNC  hi4TaskDone
+" DiffChange ErrorMsg Directory Todo Identifier (ctermfg=139 guifg=#b294bb) cssAttr DiffDelete Constant Comment StatusLineNC  hi4TaskDone
 
 
 syn cluster mkdNonListItem contains=@htmlTop,htmlItalic,htmlBold,htmlBoldItalic,mkdFootnotes,mkdInlineURL,mkdLink,mkdLinkDef,mkdLineBreak,mkdBlockquote,mkdRule,htmlH1,htmlH2,htmlH3,htmlH4,htmlH5,htmlH6,mkdMath,mkdStrike,mkdTag,mkdTaskTiming,mkdToday

@@ -55,6 +55,11 @@ tar --strip=1 -zxf vim-markdown-master.tar.gz
 
 ## Basic usage
 
+### Kraxli
+```vim
+  let g:mkd_tag_prefixes = '\[+&:]'
+```
+
 ### Folding
 
 Folding is enabled for headers by default.
