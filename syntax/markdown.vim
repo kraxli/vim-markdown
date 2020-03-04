@@ -195,7 +195,7 @@ autocmd ColorScheme * hi hiToday  guifg=#de935f ctermfg=173 gui=bold cterm=bold
 " hi hiToday gui=underline,bold guifg=#ff9800 cterm=underline,bold ctermfg=208
 
 " " --- link syntax-patterns to defined color patterns ---
-hi link mkdTaskDone hi4TaskDone " Comment
+hi link mkdTaskDone hi4TaskDone
 hi link mkdTag DiffChange
 hi link mkdTaskTiming Type
 hi link mkdToday hiToday
