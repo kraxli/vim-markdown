@@ -162,6 +162,10 @@ if !exists('g:mkd_tag_prefixes')
   let g:mkd_tag_prefixes = '\[+&:]'
 endif
 
+if !exists('g:mkd_task_done_symbols')
+  let g:mkd_task_done_symbols = '[xX✓]'
+endif
+
 " --- define colors ---
 " http://alvinalexander.com/linux/vi-vim-editor-color-scheme-syntax
 " https://vi.stackexchange.com/questions/3355/why-do-custom-highlights-in-my-vimrc-get-cleared-or-reset-to-default
@@ -192,10 +196,11 @@ execute 'syntax match mkdToday /\v\@\d{4}-\d\d-\d\d\s=[-]\s='.strftime("%Y-%m-%d
 
 " --- define patterns ---
 execute 'syntax match mkdTag ' . '/\V\s\zs' . g:mkd_tag_prefixes . '\S\{2,}/'
-syn match mkdTaskDone /^\s*[\-\+\*]\s\[[xX]\].*$/ contains=@mkdTag,@mkdTaskTiming  " @ : exclude
+execute 'syn match mkdListItemDone /^\s*[\-\+\*]\s\[' . g:mkd_task_done_symbols .  '\].*$/ contains=@mkdTag,@mkdTaskTiming'
+" @ : exclude
 
 " " --- link syntax-patterns to defined color patterns ---
-hi link mkdTaskDone hiTaskDone
+hi link mkdListItemDone hiTaskDone
 hi link mkdTag DiffChange
 hi link mkdTaskTiming Type
 hi link mkdToday hiToday

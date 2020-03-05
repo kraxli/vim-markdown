@@ -56,9 +56,18 @@ tar --strip=1 -zxf vim-markdown-master.tar.gz
 ## Basic usage
 
 ### Kraxli
+
+Define your prefixes for tags:
 ```vim
   let g:mkd_tag_prefixes = '\[+&:]'
 ```
+Defaults are  `\[+&:]`.
+
+Define your symbols for tasks done:
+```vim
+  let g:mkd_task_done_symbols = '[xX✓]'
+```
+Defaults are  `[xX✓]`.
 
 ### Folding
 
