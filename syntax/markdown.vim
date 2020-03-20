@@ -155,72 +155,7 @@ if get(g:, 'vim_markdown_strikethrough', 0)
     HtmlHiLink mkdStrike        htmlStrike
 endif
 
-" ==================================
-" Author kraxli
-" ==================================
-if !exists('g:mkd_tag_prefixes')
-  let g:mkd_tag_prefixes = '\[!+&:]'
-endif
-
-if !exists('g:mkd_task_done_symbols')
-  let g:mkd_task_done_symbols = '[xX✓]'
-endif
-
-" --- define colors ---
-" http://alvinalexander.com/linux/vi-vim-editor-color-scheme-syntax
-" https://vi.stackexchange.com/questions/3355/why-do-custom-highlights-in-my-vimrc-get-cleared-or-reset-to-default
-" ---------------------
-hi hiTaskDone gui=italic guifg=#928374 cterm=italic ctermfg=242  " ctermfg=245
-autocmd ColorScheme * hi hi4TaskDone gui=italic guifg=#928374 cterm=italic ctermfg=242  " ctermfg=245
-
-hi hiToday guifg=#de935f ctermfg=173 gui=bold cterm=bold
-" autocmd ColorScheme * hi link hiToday Type
-autocmd ColorScheme * hi hiToday  guifg=#de935f ctermfg=173 gui=bold cterm=bold
-
-" hi link hiImportant RedrawDebugRecompose
-" autocmd ColorScheme * hi link hiImportant RedrawDebugRecompose
-
-
-" --- define patterns ---
-" Timing needs to come after Project!
-syn match mkdTaskTiming  /\v\d{2}:\d\d/
-syn match mkdTaskTiming  /\v\d{4}-\d\d-\d{2}/
-syn match mkdTaskTiming  /\v\d:\d\d/
-syn match mkdTaskTiming  /\v\d:\d\d-/
-syn match mkdTaskTiming  /\v\d{2}:\d\d-/
-syn match mkdTaskTiming  /\v\d{2}:\d\d-\d{2}:\d\d/
-syn match mkdTaskTiming  /\v\@\d{4}-\d\d-\d\d/
-syn match mkdTaskTiming  /\v\@\d{4}-\d\d-\d\d\:/
-syn match mkdTaskTiming  /\v\@\d{4}-\d\d-\d\d\s*-\s*\d{4}-\d\d-\d\d\:/
-execute 'syntax match mkdToday /' .strftime("%Y-%m-%d"). '/'
-execute 'syntax match mkdToday /\[DD: *' .strftime("%Y-%m-%d"). '\]/'
-execute 'syntax match mkdToday /@'.strftime("%Y-%m-%d").'/'
-execute 'syntax match mkdToday / \='.strftime("%Y-%m-%d").':/'
-execute 'syntax match mkdToday /\s\='.strftime("%Y-%m-%d").':/'
-execute 'syntax match mkdToday /\v\@'.strftime("%Y-%m-%d").'\s=[-]\s=\d{4}-\d\d-\d\d\s=\:/'
-execute 'syntax match mkdToday /\v\@\d{4}-\d\d-\d\d\s=[-]\s='.strftime("%Y-%m-%d").'\s=\:/'
-
-" execute 'syntax match mkdTag ' . '/\V\s\zs' . g:mkd_tag_prefixes . '\S\{2,}/'
-execute 'syntax match mkdTag ' . '/\V\zs' . g:mkd_tag_prefixes . '\S\{2,}/ contains=@mkdMath'
-
-execute 'syn match mkdListItemDone /^\s*[\-\+\*]\s\[' . g:mkd_task_done_symbols .  '\].*$/ contains=@mkdTag,@mkdTaskTiming'
-
-syntax match mkdImportant '/\V\zs!Important/'
-syntax match mkdPrio '/\V\zs!\(Prio\|PRIO\|prio\|Priority\|PRIORITY\)/'
-
-" @ : exclude
-
-" " --- link syntax-patterns to defined color patterns ---
-hi link mkdImportant RedrawDebugRecompose
-hi link mkdPrio RedrawDebugRecompose
-hi link mkdListItemDone hiTaskDone
-hi link mkdTag DiffChange
-hi link mkdTaskTiming Type
-hi link mkdToday hiToday
-" DiffChange ErrorMsg Directory Todo Identifier (ctermfg=139 guifg=#b294bb) cssAttr DiffDelete Constant Comment StatusLineNC  hi4TaskDone
-
-syn cluster mkdNonListItem contains=@htmlTop,htmlItalic,htmlBold,htmlBoldItalic,mkdFootnotes,mkdInlineURL,mkdLink,mkdLinkDef,mkdLineBreak,mkdBlockquote,mkdRule,htmlH1,htmlH2,htmlH3,htmlH4,htmlH5,htmlH6,mkdMath,mkdStrike,mkdTag,mkdTaskTiming,mkdToday
-" ,@mkdCodeStart,@mkdCodeEnd,@mkdSnippet
+syn cluster mkdNonListItem contains=@htmlTop,htmlItalic,htmlBold,htmlBoldItalic,mkdFootnotes,mkdInlineURL,mkdLink,mkdLinkDef,mkdLineBreak,mkdBlockquote,mkdRule,htmlH1,htmlH2,htmlH3,htmlH4,htmlH5,htmlH6,mkdMath,mkdStrike
 
 " ==================================
 " Plasticboy
